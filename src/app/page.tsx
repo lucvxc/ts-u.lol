@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { FaGithub } from "react-icons/fa";
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -65,9 +66,22 @@ export default function Home() {
           loop
           playsInline
           controls={false}
-          className="max-h-[80vh] max-w-full object-contain"
+          className="max-h-[70vh] max-w-full object-contain"
         />
       </div>
+      <footer className="flex flex-col items-center justify-center gap-2 pb-4">
+        <p className="text-xs text-zinc-400">
+          click anywhere to hear audio btw.
+        </p>
+        <a
+          href="https://github.com/lucvxc/ts-u.lol"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-white transition-colors hover:text-zinc-400"
+        >
+          <FaGithub className="h-6 w-6" />
+        </a>
+      </footer>
     </div>
   );
 }
