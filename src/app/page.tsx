@@ -10,12 +10,12 @@ export default function Home() {
     if (!video) return;
 
     const tryPlayLoud = () => {
-      video.muted = false;
       video.volume = 1;
+      video.muted = false;
       const p = video.play();
       if (p && typeof p.then === "function") {
         p.catch(() => {
-          video.muted = false;
+          video.muted = true;
           video.play().catch(() => {});
         });
       }
@@ -23,24 +23,29 @@ export default function Home() {
 
     tryPlayLoud();
 
-    const onClick = () => tryPlayLoud();
-    window.addEventListener("click", onClick);
-    window.addEventListener("keydown", onClick);
-    window.addEventListener("mousemove", onClick);
+    const onInteract = () => {
+      tryPlayLoud();
+      window.removeEventListener("click", onInteract);
+      window.removeEventListener("keydown", onInteract);
+      window.removeEventListener("touchstart", onInteract);
+    };
+    window.addEventListener("click", onInteract);
+    window.addEventListener("keydown", onInteract);
+    window.addEventListener("touchstart", onInteract);
     return () => {
-      window.removeEventListener("click", onClick);
-      window.removeEventListener("keydown", onClick);
-      window.removeEventListener("mousemove", onClick);
+      window.removeEventListener("click", onInteract);
+      window.removeEventListener("keydown", onInteract);
+      window.removeEventListener("touchstart", onInteract);
     };
   }, []);
 
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-black font-sans">
-      <main className="flex flex-1 w-full flex-col items-center justify-center px-6 py-10">
-        <h1 className="text-center text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
+    <div className="flex h-screen w-screen flex-col items-center justify-center overflow-hidden bg-black font-sans">
+      <main className="flex flex-col items-center justify-center px-4 pt-4">
+        <h1 className="text-center text-2xl font-bold tracking-tight text-white sm:text-3xl md:text-4xl">
           site dedicated to ts u/nxynigga (nxyy)
         </h1>
-        <p className="mt-4 text-sm text-zinc-400">
+        <p className="mt-2 text-xs text-zinc-400 sm:text-sm">
           funded and developed by{" "}
           <a
             href="https://discord.gg/junebot"
@@ -52,7 +57,7 @@ export default function Home() {
           </a>
         </p>
       </main>
-      <div className="w-full flex-1">
+      <div className="flex flex-1 items-center justify-center w-full overflow-hidden">
         <video
           ref={videoRef}
           src="https://cdn.june.lat/4vwbjs8.mp4"
@@ -60,7 +65,7 @@ export default function Home() {
           loop
           playsInline
           controls={false}
-          className="h-full w-full object-contain"
+          className="max-h-[80vh] max-w-full object-contain"
         />
       </div>
     </div>
